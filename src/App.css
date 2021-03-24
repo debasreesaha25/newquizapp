@@ -1,33 +1,21 @@
-.App {
-  text-align: center;
+.card{
+  margin: 0 auto;
+  width:36vw;
+  height:60vh;
+  background-color: cornsilk;
+  margin-top: 36px;
 }
-button{
- background-color:white;
- margin-left: 5px;
- margin-bottom: 5px;
- width:25vw;
- height:10vh;
-}
-.button -md
+.h3
 {
-  text-align: center;
-  display: flex;
-  justify-content: space-between;
+  position: absolute;
+ top:20px;
+ left:25px;
+  color:rgb(15, 15, 15);
 }
-.card
-{
-  margin-top: 20px;
-  background-color: antiquewhite;
-  padding-left: 40px;
-  padding-top: 40px;
-  padding-right: 40px;
-  padding-bottom: 40px;
+.button{
+  position: absolute;
 }
-.text-2xl
-{
-  margin-bottom: 30px;
-}
-.button-right{
-  text-align: center;
-  margin-left: -200px;
+
+.buton2{
+  margin-top: '30px';
 }

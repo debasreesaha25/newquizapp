@@ -1,73 +1,98 @@
 import logo from './logo.svg';
+import Modal from 'react-modal';
 import './App.css';
 import Scorecard from './component/scorecard';
 import { useEffect, useState } from 'react';
+
 const api='https://opentdb.com/api.php?amount=10&category=18&difficulty=easy&type=multiple';
 
 function App() {
   const [questions,setQuestions]=useState([]);
   const [score,setScore]=useState(0);
   const [count,setCount]=useState(0);
-  const [bgcolor,setBgcolor]=useState("white");
+  const [disabled,setDisabled]=useState(false);
+  // const [bgcolor,setBgcolor]=useState("white");
   const [scorevalue,setScorevalue]=useState(0);
-
+  const[modalIsopen,setModalIsOpen]=useState(false);
+//  const [response,setResponse]=useState(0);
+let response=0;
   useEffect(()=>
-  {
-    fetch(api)
+    {
+     fetch(api)
     .then(res=>res.json())
     .then(data=>{
       setQuestions(data.results)});
     },[]);
-    console.log(score);
-    function handelButton()
-    {
-        setScore(score+1);
-        setBgcolor("green");   
-    }
-    
-  //  setBgcolor("white");
-  console.log(count);
-  console.log(questions[count]);
-  console.log(bgcolor);
-    return(
-    (questions.length>0)?(
-        <div className="container">
-          <div className="card">
-          <div className=" card-header bg-white text-purple-800 p-10 rounded-lg shadow-md">
-            <h2 className="text-2xl" >{count+1}.{questions[count].question}</h2>
-             </div>
-             <div className="button -md flex mt-4 space-x-4">
-             <div className="button-right">
-             <button className="font-semibold" onClick={handelButton} style={{backgroundColor:`${bgcolor}`}}>{questions[count].correct_answer}</button>
-             <button onClick={()=>{setScore(score)}}>{questions[count].incorrect_answers[0]}</button>
-             </div>
-             <div className="button-right">
-             <button onClick={()=>{setScore(score)}}>{questions[count].incorrect_answers[1]}</button>
-             <button onClick={()=>{setScore(score)}}>{questions[count].incorrect_answers[2]}</button>
-             </div>
-         </div>
-         <div style={{marginTop: '15px', textAlign:'center',marginLeft:'-180PX'}}>
-           <button style={{height:'5vh'}}onClick={()=>{
-             setBgcolor("white");
-             if(count<9)
-             {
-             setCount(count+1)
-             }
-            //  else{
-            // <div>
-            //   <Scorecard scorevalue={score}/>
-            //   {setCount(0)}
-            //   </div>  
-            //  }
+    // console.log(score);
+    // console.log(handelButton());
+    let bgcolor='';
+      // if(questions.length!=0 && Response=== 0 )
+      console.log(score);
+        function handelButton(answer)
+        {
+           console.log(answer,questions[count].correct_answer);
+            if(questions.length>0 && questions[count].correct_answer===answer)
+              {
+                console.log("shree"); 
+                console.log(questions[count].correct_answer);
+               setScore(score+1);
+               bgcolor='green';
+              }
             else{
-              setScorevalue(score);
+              setScore(score);
+              bgcolor="red";
+             console.log("debasree"); 
             }
-         }}>Press for next</button>
+            console.log(response);
+            setDisabled(true);
+    }
+    console.log(response);  
+    let shuffleAns=[];
+        if(questions.length!=0)
+        {
+          console.log(questions[count].incorrect_answers);
+          shuffleAns=[questions[count].correct_answer, ...questions[count].incorrect_answers].sort(()=>(Math.random()-0.5))
+          console.log(shuffleAns); 
+        } 
+          console.log(count);
+          console.log(questions[count]);
+          console.log(response);
+          console.log(`${bgcolor}`);
+    return(
+           (questions.length>0)?(
+            <div className="container" style={{position:'relative'}}>
+             <div className="card" style={{position:'relative'}}>
+               <div>
+                 <h3 className="h3">{count+1}.{questions[count].question}</h3>
+                </div>
+               <div>
+                 <div style={{position:'relative',top: '23vh'}}>
+                  <button className="btn btn-primary btn-sm btn-block" disabled={disabled} onClick={()=>handelButton(shuffleAns[0])} style={{backgroundColor: `${bgcolor}`}} answer={shuffleAns[0]}>{shuffleAns[0]}</button>
+                  <button className="btn btn-primary btn-sm btn-block" disabled={disabled} onClick= {()=>handelButton(shuffleAns[1])} style={{backgroundColor: `${bgcolor}`}} answer={shuffleAns[1]} >{shuffleAns[1]}</button>
+                  <button className="btn btn-primary btn-sm btn-block" disabled={disabled}  onClick={()=>handelButton(shuffleAns[2])}  style={{backgroundColor: `${bgcolor}`}} answer={shuffleAns[2]}>{shuffleAns[2]}</button>
+                  <button className="btn btn-primary btn-sm btn-block" disabled={disabled}  onClick={()=>handelButton(shuffleAns[3])} style={{backgroundColor: `${bgcolor}`}} answer={shuffleAns[3]}>{shuffleAns[3]}</button>
+                  </div>
+                  </div>
+                  <div style={{display:'flex',justifyContent: 'center'}}>
+                  <button style={{position:'absolute',top: '300px',backgroundColor:'orange',zIndex: '10'}} className="btn btn-primary buton2" onClick={()=>{
+                    setDisabled(false);
+                    // console.log("hjk");
+                     bgcolor="white";
+                      if(count<9)
+                        {
+                          console.log(count);
+                        setCount(count+1)
+                        }
+                      else{
+                        setScorevalue(score);
+                      }
+                    // (count>9) ? setCount(count+1) : setScorevalue(score);
+                }}>Press for next</button>
+              </div>
           <Scorecard scorevalue={scorevalue} count={count}/>
          </div>
-        </div>
-        </div>
-        ) : (<h1>its loading</h1>)      
+         </div>
+        ) : (<h1 style={{color:'white',textAlign:'center',margin:'50px auto'}}> loading..</h1>)      
     );  
 }
 export default App;

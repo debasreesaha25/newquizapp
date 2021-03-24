@@ -6,7 +6,9 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <h1 style={{textAlign:'center',color:'navy'}}><u>Test your knowledge</u></h1>
+    <div className="container" style={{textAlign:'center'}}>
+    <h1 style={{color:'orange',fontStyle:" sans-serif"}}>Test your knowledge</h1>
+    </div>
     <App />
   </React.StrictMode>,
   document.getElementById('root')
